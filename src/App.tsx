@@ -2,7 +2,15 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-function Square({ value, onSquareClick, isHighlighted }) {
+function Square({
+  value,
+  onSquareClick,
+  isHighlighted,
+}: {
+  value: string | null;
+  onSquareClick: () => void;
+  isHighlighted?: boolean;
+}) {
   return (
     <button
       className={`square btn btn-light ${isHighlighted ? "highlight" : ""}`}
@@ -13,8 +21,18 @@ function Square({ value, onSquareClick, isHighlighted }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay, lastMove }) {
-  function handleClick(i) {
+function Board({
+  xIsNext,
+  squares,
+  onPlay,
+  lastMove,
+}: {
+  xIsNext: boolean;
+  squares: (string | null)[];
+  onPlay: (nextSquares: (string | null)[], moveIndex: number) => void;
+  lastMove: number | null;
+}) {
+  function handleClick(i: number) {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -48,18 +66,18 @@ function Board({ xIsNext, squares, onPlay, lastMove }) {
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
-  const [lastMove, setLastMove] = useState(null);
+  const [lastMove, setLastMove] = useState<number | null>(null);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
-  function handlePlay(nextSquares, moveIndex) {
+  function handlePlay(nextSquares: (string | null)[], moveIndex: number) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
     setLastMove(moveIndex);
   }
 
-  function jumpTo(move) {
+  function jumpTo(move: number) {
     setCurrentMove(move);
     setLastMove(null);
   }
@@ -90,7 +108,7 @@ export default function Game() {
   );
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares: (string | null)[]): string | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
