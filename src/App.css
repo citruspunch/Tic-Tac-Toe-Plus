@@ -1,7 +1,9 @@
 .board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
-  gap: 5px;
+  gap: 10px;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .square {
