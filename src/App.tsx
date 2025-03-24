@@ -65,6 +65,9 @@ function Board({
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [historyPosition, setHistoryPosition] = useState<(number | null)[]>([
+    null,
+  ]);
   const [currentMove, setCurrentMove] = useState(0);
   const [lastMove, setLastMove] = useState<number | null>(null);
   const xIsNext = currentMove % 2 === 0;
@@ -75,11 +78,16 @@ export default function Game() {
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
     setLastMove(moveIndex);
+    const nextHistoryPosition = [
+      ...historyPosition.slice(0, currentMove + 1),
+      moveIndex,
+    ];
+    setHistoryPosition(nextHistoryPosition);
   }
 
   function jumpTo(move: number) {
     setCurrentMove(move);
-    setLastMove(null);
+    setLastMove(historyPosition[move]);
   }
 
   return (
